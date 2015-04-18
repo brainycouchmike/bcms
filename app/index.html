@@ -12,36 +12,32 @@
     <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
     <link rel="stylesheet" href="assets/app.css"/>
   </head>
+  <body layout="column" ng-controller="CoreController">
 
-  <body layout="column" ng-controller="PageController as page">
-    <md-toolbar layout="row">
-      <md-button class="menu" hide-gt-sm ng-click="page.toggleList()" aria-label="Show User List">
-        <md-icon md-svg-icon="menu" ></md-icon>
-      </md-button>
-      <h1>{{ page.core.AppName }}</h1>
+    <md-toolbar layout="row" ng-controller="PageController as ul">
+        <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List"></md-button>
+        <h1>{{ core.AppName }}</h1>
     </md-toolbar>
-
-    <div flex layout="row">
-
+    
+    <div flex layout="row" ng-controller="PageController as ul">
         <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z2" md-component-id="left">
           <md-list>
-            <md-item ng-repeat="it in page.pages">
-                <md-button ng-click="page.selectPage(it)" ng-class="{'selected' : it === page.selected }">
+            <md-item ng-repeat="it in ul.pages">
+                <md-button ng-click="ul.selectPage(it)" ng-class="{'selected' : it === ul.selected }">
                   {{it.name}}
-                </md-button>
+              </md-button>
             </md-item>
           </md-list>
         </md-sidenav>
-
+        
         <md-content flex id="content">
-          <h2>{{page.selected.name}}</h2>
-          <p>{{page.selected.content}}</p>
+          <h2>{{ul.selected.name}}</h2>
+          <p>{{ul.selected.content}}</p>
 
-          <md-button class="share" md-no-ink ng-click="page.menu($event)" aria-label="Menu">
+          <md-button class="share" md-no-ink ng-click="ul.menu($event)" aria-label="Menu">
             <md-icon md-svg-icon="menu"></md-icon>
           </md-button>
         </md-content>
-
     </div>
 
     <script src="./bower_components/angular/angular.js"></script>

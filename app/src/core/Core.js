@@ -3,7 +3,7 @@
     // Prepare the 'core' module for subsequent registration of controllers and delegates
     angular.
     module('core', [ 'ngMaterial', 'ngRoute' ]).
-    controller('CoreController', [
+    controller('CoreController', ['$scope',
         'coreService', '$mdSidenav', '$mdBottomSheet', '$log', '$q',
         /**
         * Core [base] Controller for the BCMS App
@@ -12,11 +12,10 @@
         * @param avatarsService
         * @constructor
         */
-        function(coreService, $mdSidenav, $mdBottomSheet, $log, $q) {
-            var self = this;
+        function($scope,coreService, $mdSidenav, $mdBottomSheet, $log, $q) {
             coreService.loadCore().
             then(function(core) {
-                self.core = core;
+                $scope.core = core;
             });
         }
     ]).
