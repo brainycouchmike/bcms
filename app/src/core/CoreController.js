@@ -1,10 +1,10 @@
 (function(){
 
   angular
-       .module('users')
-       .controller('UserController', [
-          'userService', '$mdSidenav', '$mdBottomSheet', '$log', '$q',
-          UserController
+       .module('core')
+       .controller('Core', [
+          'pageService', '$mdSidenav', '$mdBottomSheet', '$log', '$q',
+          CoreController
        ]);
 
   /**
@@ -14,22 +14,22 @@
    * @param avatarsService
    * @constructor
    */
-  function UserController( userService, $mdSidenav, $mdBottomSheet, $log, $q) {
+  function CoreController( coreService, $mdSidenav, $mdBottomSheet, $log, $q) {
     var self = this;
 
     self.selected     = null;
-    self.users        = [ ];
-    self.selectUser   = selectUser;
-    self.toggleList   = toggleUsersList;
-    self.share        = share;
+    self.cores        = [ ];
+    self.selectCore   = selectPage;
+    self.toggleMenu   = toggleCoresMenu;
+    self.menu        = menu;
 
-    // Load all registered users
+    // Load all registered cores
 
-    userService
-          .loadAllUsers()
-          .then( function( users ) {
-            self.users    = [].concat(users);
-            self.selected = users[0];
+    coreService
+          .loadAllCores()
+          .then( function( cores ) {
+            self.cores    = [].concat(cores);
+            self.selected = cores[0];
           });
 
     // *********************************
@@ -40,7 +40,7 @@
      * First hide the bottomsheet IF visible, then
      * hide or Show the 'left' sideNav area
      */
-    function toggleUsersList() {
+    function toggleCoresMenu() {
       var pending = $mdBottomSheet.hide() || $q.when(true);
 
       pending.then(function(){
@@ -52,21 +52,21 @@
      * Select the current avatars
      * @param menuId
      */
-    function selectUser ( user ) {
-      self.selected = angular.isNumber(user) ? $scope.users[user] : user;
-      self.toggleList();
+    function selectCore ( core ) {
+      self.selected = angular.isNumber(core) ? $scope.cores[core] : core;
+      self.toggleMenu();
     }
 
     /**
      * Show the bottom sheet
      */
-    function share($event) {
-        var user = self.selected;
+    function menu($event) {
+        var core = self.selected;
 
         $mdBottomSheet.show({
           parent: angular.element(document.getElementById('content')),
-          templateUrl: '/src/users/view/contactSheet.html',
-          controller: [ '$mdBottomSheet', UserSheetController],
+          templateUrl: '/src/cores/view/contactSheet.html',
+          controller: [ '$mdBottomSheet', CoreSheetController],
           controllerAs: "vm",
           bindToController : true,
           targetEvent: $event
@@ -77,8 +77,8 @@
         /**
          * Bottom Sheet controller for the Avatar Actions
          */
-        function UserSheetController( $mdBottomSheet ) {
-          this.user = user;
+        function CoreSheetController( $mdBottomSheet ) {
+          this.core = core;
           this.items = [
             { name: 'Phone'       , icon: 'phone'       , icon_url: 'assets/svg/phone.svg'},
             { name: 'Twitter'     , icon: 'twitter'     , icon_url: 'assets/svg/twitter.svg'},
